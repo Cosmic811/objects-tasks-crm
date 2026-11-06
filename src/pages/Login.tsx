@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../auth/context'
@@ -22,18 +22,23 @@ export function Login() {
   const [showPassword, setShowPassword] = useState(false)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
+  const pending = useRef(false)
+  useEffect(() => { document.title = 'Вход | Объекты и задачи' }, [])
   if (loading) return <main className="standalone"><Loading /></main>
   if (session) {
     const target: unknown = location.state?.from
     return <Navigate to={typeof target === 'string' && target.startsWith('/') && !target.startsWith('//') && target !== '/login' ? target : '/'} replace />
   }
   async function submit(event: FormEvent) {
-    event.preventDefault(); setBusy(true); setError('')
+    event.preventDefault()
+    if (pending.current) return
+    pending.current = true
+    setBusy(true); setError('')
     try {
       const { error } = await client().auth.signInWithPassword({ email: email.trim(), password })
-      if (error) setError(error.status === 429 ? 'Слишком много попыток. Подождите немного и повторите вход.' : 'Не удалось войти. Проверьте email и пароль.')
+      if (error) setError(error.status === 429 ? 'Слишком много попыток. Подождите немного и повторите вход.' : !error.status ? 'Сервер недоступен. Проверьте соединение и повторите вход.' : 'Не удалось войти. Проверьте email и пароль.')
     } catch { setError('Нет соединения с сервером. Попробуйте ещё раз.') }
-    finally { setBusy(false) }
+    finally { pending.current = false; setBusy(false) }
   }
   return <main className="login-page">
     <aside className="login-identity">

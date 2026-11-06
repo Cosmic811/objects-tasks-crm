@@ -13,7 +13,7 @@
 .workspace-nav a { display: flex; align-items: center; gap: 13px; min-height: 48px; padding: 12px; text-decoration: none; font-size: 14px; font-weight: 550; color: var(--sidebar-muted); border: 1px solid transparent; border-radius: var(--radius-control); transition: background var(--duration-fast), color var(--duration-fast), border-color var(--duration-fast); }
 .workspace-nav a span { flex: 1; }
 .workspace-nav a > svg:last-child { opacity: 0; transition: opacity var(--duration-fast), transform var(--duration-fast); transform: translateX(-3px); }
-.workspace-nav a:hover { color: #ffffff; background: #20353a; }
+@media (hover: hover) { .workspace-nav a:hover { color: #ffffff; background: #20353a; } }
 .workspace-nav a.active { color: #f4f8f0; background: #2a4544; border-color: #3b5751; font-weight: 650; }
 .workspace-nav a.active > svg:last-child { opacity: .8; transform: none; }
 .account { margin-top: auto; padding-top: 24px; border-top: 1px solid #34474a; }
@@ -24,7 +24,7 @@
 .avatar { display: inline-grid; place-items: center; flex: none; width: 32px; height: 32px; border: 1px solid #dae4da; border-radius: 9px; font-size: 10px; font-weight: 750; letter-spacing: .01em; color: #52715e; background: #edf2e9; }
 .account .avatar { width: 38px; height: 38px; font-size: 12px; color: #dce9d9; background: #314545; border-color: #455a55; }
 .logout-button { display: flex; align-items: center; gap: 10px; width: 100%; background: transparent; border: 0; border-radius: var(--radius-control); color: var(--sidebar-muted); padding: 11px 8px; margin-top: 18px; min-height: 42px; font-size: var(--text-xs); text-align: left; transition: background var(--duration-fast), color var(--duration-fast); }
-.logout-button:hover { color: white; background: #20353a; }
+@media (hover: hover) { .logout-button:hover { color: white; background: #20353a; } }
 .logout-button:disabled { opacity: .55; }
 .workspace { margin-left: var(--sidebar-width); min-width: 0; min-height: 100dvh; display: flex; flex-direction: column; }
 .topbar { min-height: 72px; padding: 16px var(--page-gutter); display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); background: #f8f8f3; }
@@ -44,7 +44,7 @@
 .count { display: inline-grid; place-items: center; min-width: 25px; height: 24px; padding: 0 7px; background: #e6eae1; color: #536b58; border-radius: 6px; font-size: 12px; font-weight: 650; margin-left: 7px; vertical-align: middle; font-variant-numeric: tabular-nums; }
 .breadcrumbs { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 24px; font-size: var(--text-sm); color: #7d8b80; }
 .breadcrumbs a { display: inline-flex; align-items: center; gap: 7px; color: var(--muted); text-decoration: none; border-radius: 3px; overflow-wrap: anywhere; max-width: 100%; }
-.breadcrumbs a:hover { color: var(--accent); text-decoration: underline; }
+@media (hover: hover) { .breadcrumbs a:hover { color: var(--accent); text-decoration: underline; } }
 .breadcrumbs > svg { color: #88958c; }
 .app-footer { padding: 18px var(--page-gutter); color: var(--muted); font-size: var(--text-xs); border-top: 1px solid var(--line); }
 .mobile-header { display: none; }

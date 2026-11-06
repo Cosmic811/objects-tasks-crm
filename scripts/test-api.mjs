@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict'
 import { mkdir, writeFile } from 'node:fs/promises'
+import { dirname } from 'node:path'
 import { createClient } from '@supabase/supabase-js'
 
 const env = process.env
@@ -393,9 +394,10 @@ try {
   report.passed = report.results.filter((r) => r.status === 'PASS').length
   report.failed = report.results.filter((r) => r.status === 'FAIL').length
   report.status = failed ? 'FAIL' : 'PASS'
-  await mkdir('docs/qa', { recursive: true })
+  const reportPath = env.TEST_REPORT_PATH || '.cache/qa/supabase-api.json'
+  await mkdir(dirname(reportPath), { recursive: true })
   await writeFile(
-    'docs/qa/supabase-api.json',
+    reportPath,
     JSON.stringify(report, null, 2) + '\n',
   )
 }

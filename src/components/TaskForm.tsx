@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useId, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 import { api } from '../lib/api'
-import { errorMessage } from '../lib/errors'
+import { mutationErrorMessage } from '../lib/errors'
 import type { Profile, Task } from '../types/database'
 import { Dialog, ErrorNotice, Icon } from './Ui'
 
@@ -23,13 +23,21 @@ export function TaskForm({
   const [assignee, setAssignee] = useState(task?.assignee_id ?? '')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
+  const pending = useRef(false)
+  const titleRef = useRef<HTMLInputElement>(null)
+  const assigneeRef = useRef<HTMLSelectElement>(null)
+  const errorId = useId()
   const employees = profiles.filter((p) => p.role === 'executor')
   async function submit(event: FormEvent) {
     event.preventDefault()
+    if (pending.current) return
     if (!title.trim() || !assignee) {
       setError('Укажите название и исполнителя.')
+      if (!title.trim()) titleRef.current?.focus()
+      else assigneeRef.current?.focus()
       return
     }
+    pending.current = true
     setBusy(true)
     setError('')
     try {
@@ -42,8 +50,10 @@ export function TaskForm({
       )
       onSaved(id)
     } catch (error) {
-      setError(errorMessage(error))
+      setError(mutationErrorMessage(error))
       setBusy(false)
+    } finally {
+      pending.current = false
     }
   }
   return (
@@ -54,10 +64,14 @@ export function TaskForm({
       busy={busy}
     >
       <form className="form stack" onSubmit={submit} aria-busy={busy}>
-        {error && <ErrorNotice>{error}</ErrorNotice>}
+        {error && <ErrorNotice id={errorId}>{error}</ErrorNotice>}
         <label>
           Название задачи
           <input
+            ref={titleRef}
+            name="task-title"
+            aria-invalid={Boolean(error && !title.trim()) || undefined}
+            aria-describedby={error ? errorId : undefined}
             autoFocus
             required
             maxLength={200}
@@ -70,6 +84,7 @@ export function TaskForm({
         <label>
           Описание
           <textarea
+            name="task-description"
             rows={5}
             maxLength={10000}
             placeholder="Что проверить, подготовить или согласовать"
@@ -81,6 +96,10 @@ export function TaskForm({
         <label>
           Исполнитель
           <select
+            ref={assigneeRef}
+            name="task-assignee"
+            aria-invalid={Boolean(error && !assignee) || undefined}
+            aria-describedby={error ? errorId : undefined}
             required
             value={assignee}
             onChange={(e) => setAssignee(e.target.value)}
@@ -113,7 +132,7 @@ export function TaskForm({
           <button
             type="button"
             className="button secondary"
-            onClick={onClose}
+            data-dialog-cancel
             disabled={busy}
           >
             Отмена

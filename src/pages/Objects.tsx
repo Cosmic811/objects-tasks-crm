@@ -4,8 +4,9 @@ import { useAuth } from '../auth/context'
 import { api } from '../lib/api'
 import { taskCount } from '../lib/workflow'
 import { useQuery } from '../hooks/useQuery'
+import { usePagination } from '../hooks/usePagination'
 import { ObjectForm } from '../components/ObjectForm'
-import { Empty, Icon, LoadError, Loading, Success } from '../components/Ui'
+import { Empty, Icon, LoadError, Loading, Pagination, Success } from '../components/Ui'
 
 export function Objects() {
   const { profile } = useAuth()
@@ -17,6 +18,7 @@ export function Objects() {
     const [objects, tasks] = await Promise.all([api.objects(), api.tasks()])
     return { objects, tasks }
   }, 'objects')
+  const pagination = usePagination(data?.objects ?? [])
   return (
     <>
       <div className="page-header">
@@ -47,8 +49,8 @@ export function Objects() {
             : 'Когда руководитель назначит вам задачу, её объект появится здесь.'}
         </Empty>
       ) : (
-        <section className="object-list" aria-label="Список объектов" aria-busy={refreshing}>
-          {data.objects.map((object) => {
+        <><section className="object-list" aria-label="Список объектов" aria-busy={refreshing}>
+          {pagination.items.map((object) => {
             const tasks = data.tasks.filter((t) => t.object_id === object.id)
             return (
               <Link
@@ -74,7 +76,7 @@ export function Objects() {
               </Link>
             )
           })}
-        </section>
+        </section><Pagination {...pagination} /></>
       )}
       {creating && (
         <ObjectForm

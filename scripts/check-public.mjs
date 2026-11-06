@@ -11,6 +11,8 @@ const names = execFileSync(
 const files = [...new Set(names)]
 const findings = []
 for (const file of files) {
+  if (/^(?:\.impeccable\/|\.cursor\/|\.codex\/|(?:DESIGN|PRODUCT|AGENTS)\.md$|docs\/qa\/|docs\/(?:design-refinement|qa-report)\.md$)/.test(file))
+    findings.push(file + ': development-only artifact')
   if (
     /^\.env/.test(file) &&
     !['.env.example', '.env.test.example'].includes(file)

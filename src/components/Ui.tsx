@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import {
@@ -9,6 +9,7 @@ import {
 } from 'lucide-react'
 import { availableActions, statusLabels } from '../lib/workflow'
 import type { Profile, Status, Task } from '../types/database'
+import { usePagination } from '../hooks/usePagination'
 
 const icons = {
   building: Building2, tasks: ClipboardList, arrow: ArrowUpRight,
@@ -44,11 +45,11 @@ export function Badge({ status }: { status: Status }) {
     <Icon name={statusIcons[status]} size={14} />{statusLabels[status]}
   </span>
 }
-export function ErrorNotice({ children }: { children: ReactNode }) {
-  return <div className="notice error" role="alert"><Icon name="alert" /><div>{children}</div></div>
+export function ErrorNotice({ children, id }: { children: ReactNode; id?: string }) {
+  return <div id={id} className="notice error" role="alert"><Icon name="alert" /><div>{children}</div></div>
 }
 export function Success({ children }: { children: ReactNode }) {
-  return children ? <div className="notice success" role="status"><Icon name="success" /><div>{children}</div></div> : null
+  return <div className={children ? 'notice success' : 'sr-only'} role="status" aria-atomic="true">{children && <><Icon name="success" /><div>{children}</div></>}</div>
 }
 export function Loading({ variant = 'list' }: { variant?: 'list' | 'task' }) {
   return <div className={`loading loading-${variant}`} role="status" aria-live="polite">
@@ -77,6 +78,20 @@ export function Dialog({ title, description, children, onClose, busy = false, cl
   const ref = useRef<HTMLDialogElement>(null)
   const titleId = useId()
   const descriptionId = useId()
+  const [closing, setClosing] = useState(false)
+  function requestClose() {
+    if (busy || closing) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) onClose()
+    else setClosing(true)
+  }
+  useEffect(() => {
+    if (!closing) return
+    const preference = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const finish = () => { if (preference.matches) onClose() }
+    preference.addEventListener('change', finish)
+    finish()
+    return () => preference.removeEventListener('change', finish)
+  }, [closing, onClose])
   useEffect(() => {
     const opener = document.activeElement
     const dialog = ref.current
@@ -86,11 +101,17 @@ export function Dialog({ title, description, children, onClose, busy = false, cl
       if (opener instanceof HTMLElement && opener.isConnected) opener.focus()
     }
   }, [])
-  return <dialog ref={ref} className={className} aria-labelledby={titleId}
+  return <dialog ref={ref} className={className} data-closing={closing || undefined} aria-labelledby={titleId}
     aria-describedby={description ? descriptionId : undefined} aria-busy={busy}
-    onCancel={event => { event.preventDefault(); if (!busy) onClose() }}>
+    onCancel={event => { event.preventDefault(); requestClose() }}
+    onAnimationEnd={event => { if (closing && event.target === ref.current) onClose() }}
+    onSubmitCapture={event => { if (closing) { event.preventDefault(); event.stopPropagation() } }}
+    onClickCapture={event => { if (closing) { event.preventDefault(); event.stopPropagation() } }}
+    onClick={event => {
+      if (event.target instanceof Element && event.target.closest('[data-dialog-cancel]')) requestClose()
+    }}>
     <div className="dialog-header"><div><h2 id={titleId}>{title}</h2>{description && <p className="muted" id={descriptionId}>{description}</p>}</div>
-      <button type="button" className="icon-button" aria-label="Закрыть" onClick={onClose} disabled={busy}><Icon name="close" /></button>
+      <button type="button" className="icon-button" aria-label="Закрыть" onClick={requestClose} disabled={busy || closing}><Icon name="close" /></button>
     </div>{children}
   </dialog>
 }
@@ -105,22 +126,36 @@ function taskHint(task: Task, viewer?: Profile) {
   }
   return hints[task.status]
 }
+export function Pagination({ page, pages, from, to, total, previous, next }: {
+  page: number; pages: number; from: number; to: number; total: number
+  previous: () => void; next: () => void
+}) {
+  if (pages < 2) return null
+  return <nav className="pagination" aria-label="Страницы списка">
+    <span role="status" aria-live="polite">{from}–{to} из {total}</span>
+    <div className="actions">
+      <button className="button secondary" onClick={previous} disabled={page === 0} aria-label="Предыдущая страница"><Icon name="back" size={17} />Назад</button>
+      <button className="button secondary" onClick={next} disabled={page === pages - 1} aria-label="Следующая страница">Далее<Icon name="right" size={17} /></button>
+    </div>
+  </nav>
+}
 export function TaskTable({ tasks, profiles, showObject, objectNames, viewer }: {
   tasks: Task[]; profiles: Profile[]; showObject?: boolean; objectNames?: Record<string, string>; viewer?: Profile
 }) {
+  const pagination = usePagination(tasks)
   const names = Object.fromEntries(profiles.map(profile => [profile.id, profile.display_name]))
   if (!tasks.length) return <Empty title="Задач пока нет">Здесь появятся назначенные задачи и их текущие статусы.</Empty>
   return <>
     <div className="table-wrap"><table className="task-table">
       <thead><tr><th scope="col">Задача</th><th scope="col">Статус</th><th scope="col">Исполнитель</th><th scope="col"><span className="sr-only">Переход</span></th></tr></thead>
-      <tbody>{tasks.map(task => <tr key={task.id}>
+      <tbody>{pagination.items.map(task => <tr key={task.id}>
         <td><Link className="row-link" to={`/tasks/${task.id}`}>{task.title}</Link>{showObject && <span className="cell-subtitle"><Icon name="building" size={13} />{objectNames?.[task.object_id] ?? 'Объект'}</span>}</td>
         <td><Badge status={task.status} /><span className="cell-hint">{taskHint(task, viewer)}</span></td>
         <td><span className="person"><Avatar name={names[task.assignee_id] ?? '?'} /><span>{names[task.assignee_id] ?? 'Профиль недоступен'}</span></span></td>
         <td><Icon name="arrow" size={18} /></td>
       </tr>)}</tbody>
     </table></div>
-    <ul className="task-cards" aria-label="Список задач">{tasks.map(task => <li key={task.id}>
+    <ul className="task-cards" aria-label="Список задач">{pagination.items.map(task => <li key={task.id}>
       <Link className="task-card" to={`/tasks/${task.id}`}>
         <div className="task-card-title"><strong>{task.title}</strong><Icon name="arrow" size={18} /></div>
         {showObject && <span className="cell-subtitle"><Icon name="building" size={14} />{objectNames?.[task.object_id] ?? 'Объект'}</span>}
@@ -128,5 +163,6 @@ export function TaskTable({ tasks, profiles, showObject, objectNames, viewer }: 
         <span className="person"><Avatar name={names[task.assignee_id] ?? '?'} /><span>{names[task.assignee_id] ?? 'Профиль недоступен'}</span></span>
       </Link>
     </li>)}</ul>
+    <Pagination {...pagination} />
   </>
 }

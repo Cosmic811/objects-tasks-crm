@@ -1,8 +1,8 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '../auth/context'
 import { api } from '../lib/api'
-import { errorMessage } from '../lib/errors'
+import { mutationErrorMessage } from '../lib/errors'
 import { availableActions, formatDate, statusLabels } from '../lib/workflow'
 import { useQuery } from '../hooks/useQuery'
 import type { Status } from '../types/database'
@@ -21,6 +21,7 @@ export function TaskDetail() {
   const [revision, setRevision] = useState(false)
   const [comment, setComment] = useState('')
   const [busy, setBusy] = useState(false)
+  const pending = useRef(false)
   const [actionError, setActionError] = useState('')
   const [success, setSuccess] = useState(location.state?.message ?? '')
   const { data, error, reload, refreshing } = useQuery(async () => {
@@ -30,16 +31,17 @@ export function TaskDetail() {
   }, `task:${id}`)
   const working = busy || refreshing
   async function transition(status: Status) {
-    if (!data) return
+    if (!data || pending.current || refreshing) return
     if (status === 'revision' && !comment.trim()) { setActionError('Для возврата задачи укажите причину.'); return }
+    pending.current = true
     setBusy(true); setActionError(''); setSuccess('')
     try {
       await api.transition(data.task, status, status === 'revision' ? comment : undefined)
       setRevision(false); setComment('')
       setSuccess(`Статус изменён: ${statusLabels[status]}.`)
       reload()
-    } catch (error) { setActionError(errorMessage(error)) }
-    finally { setBusy(false) }
+    } catch (error) { setActionError(mutationErrorMessage(error)) }
+    finally { pending.current = false; setBusy(false) }
   }
   if (error) return <><Breadcrumbs /><LoadError error={error} retry={reload} /></>
   if (!data) return <Loading variant="task" />
@@ -74,7 +76,7 @@ export function TaskDetail() {
           <p className="preserve-lines">{lastReturn.comment}</p>
           <span className="return-note-meta">{name(lastReturn.actor_id)} · {formatDate(lastReturn.created_at)}</span>
         </div>}
-        <div className="workflow-actions">
+        {!(task.status === 'revision' && lastReturn?.comment && !actions.length) && <div className="workflow-actions">
           <p className="muted">{actions.length ? manager ? 'Проверьте результат и выберите решение.' : 'Обновите статус, когда перейдёте к следующему этапу.' : waitingText[task.status]}</p>
           {actions.length > 0 && <div className="actions">{actions.map(action => <button
             className={`button ${action.secondary ? 'secondary' : ''}`} key={action.target} disabled={working}
@@ -82,7 +84,7 @@ export function TaskDetail() {
               if (action.target === 'revision') { setRevision(true); setActionError('') }
               else void transition(action.target)
             }}><Icon name={action.target === 'accepted' ? 'check' : action.target === 'revision' ? 'revision' : 'right'} size={18} />{working ? 'Сохраняем…' : action.label}</button>)}</div>}
-        </div>
+        </div>}
         {revision && <form className="form stack revision-form" aria-busy={working} onSubmit={event => { event.preventDefault(); void transition('revision') }}>
           <label>Причина возврата на доработку<textarea autoFocus required rows={3} maxLength={4000} placeholder="Что нужно исправить исполнителю?" value={comment} onChange={event => setComment(event.target.value)} disabled={working} /></label>
           <div className="actions"><button className="button" disabled={working}>{working ? 'Возвращаем…' : 'Отправить на доработку'}<Icon name="right" size={17} /></button><button className="button secondary" type="button" onClick={() => setRevision(false)} disabled={working}>Отмена</button></div>

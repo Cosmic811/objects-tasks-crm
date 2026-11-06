@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { errorMessage } from '../lib/errors'
+import { useRef, useState } from 'react'
+import { mutationErrorMessage } from '../lib/errors'
 import { Dialog, ErrorNotice, Icon } from './Ui'
 
 export function DeleteDialog({
@@ -17,15 +17,20 @@ export function DeleteDialog({
 }) {
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
+  const pending = useRef(false)
   async function confirm() {
+    if (pending.current) return
+    pending.current = true
     setBusy(true)
     setError('')
     try {
       await remove()
       onDeleted()
     } catch (error) {
-      setError(errorMessage(error))
+      setError(mutationErrorMessage(error))
       setBusy(false)
+    } finally {
+      pending.current = false
     }
   }
   return (
@@ -40,7 +45,7 @@ export function DeleteDialog({
           <button
             autoFocus
             className="button secondary"
-            onClick={onClose}
+            data-dialog-cancel
             disabled={busy}
           >
             Отмена

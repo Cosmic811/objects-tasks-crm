@@ -74,6 +74,7 @@ function Shell() {
   const context = location.pathname.startsWith('/tasks/') ? 'Карточка задачи'
     : location.pathname.startsWith('/objects/') ? 'Карточка объекта'
       : location.pathname === '/my-tasks' ? 'Мои задачи' : 'Объекты'
+  useEffect(() => { document.title = `${context} | Объекты и задачи` }, [context])
   async function logout() {
     setBusy(true)
     setError('')

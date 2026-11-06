@@ -28,7 +28,7 @@
   .mobile-header .brand-name { font-size: 14px; }
   .mobile-header .brand-symbol { width: 36px; height: 40px; border-radius: 8px; }
   .menu-button { display: grid; place-items: center; width: 42px; height: 42px; border: 1px solid #d6dfd0; border-radius: 8px; background: white; color: var(--text); }
-  .menu-button:hover { background: #edf3e7; }
+@media (hover: hover) {   .menu-button:hover { background: #edf3e7; } }
   .topbar { display: none; }
   .content { padding-top: 30px; }
   .page-header { gap: 20px; }
@@ -64,7 +64,7 @@
   .table-wrap { display: none; }
   .task-cards { display: grid; gap: 14px; }
   .task-card { display: grid; gap: 14px; padding: 20px; background: white; border: 1px solid var(--line); border-radius: var(--radius); text-decoration: none; color: var(--text); transition: background var(--duration-fast), border-color var(--duration-fast); }
-  .task-card:hover { background: #fafcf6; border-color: #c4d4bf; }
+@media (hover: hover) {   .task-card:hover { background: #fafcf6; border-color: #c4d4bf; } }
   .task-card-title { display: flex; align-items: flex-start; justify-content: space-between; gap: 15px; }
   .task-card-title strong { font-size: 15px; line-height: 1.65; font-weight: 700; overflow-wrap: anywhere; }
   .task-card-title svg { margin-top: 3px; color: #7a8f7d; }

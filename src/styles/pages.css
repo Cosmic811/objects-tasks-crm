@@ -27,7 +27,7 @@
 .task-meta dt svg { color: #8b9b8d; }
 .task-meta dd { margin: 0; font-size: 13px; font-weight: 550; line-height: 1.7; overflow-wrap: anywhere; }
 .task-meta dd a { display: inline-flex; align-items: center; gap: 6px; color: var(--accent); font-weight: 650; text-decoration: none; }
-.task-meta dd a:hover { text-decoration: underline; }
+@media (hover: hover) { .task-meta dd a:hover { text-decoration: underline; } }
 .task-meta .avatar { width: 28px; height: 28px; font-size: 9px; }
 .history-section { grid-column: 1; padding-top: 8px; }
 .history-heading { display: flex; align-items: center; gap: 10px; margin-bottom: 26px; }
@@ -74,7 +74,7 @@
 .input-with-icon input { padding-left: 42px; }
 .password-field input { padding-right: 48px; }
 .password-toggle { position: absolute; right: 5px; top: 4px; width: 39px; height: 39px; display: grid; place-items: center; background: transparent; border: 0; border-radius: 6px; color: #718676; }
-.password-toggle:hover { color: var(--accent); background: #edf3e7; }
+@media (hover: hover) { .password-toggle:hover { color: var(--accent); background: #edf3e7; } }
 .login-note { display: flex; align-items: flex-start; gap: 10px; margin-top: 28px; padding-top: 24px; border-top: 1px solid #dfe3d8; color: var(--muted); font-size: 12px; line-height: 1.8; }
 .login-note svg { margin-top: 3px; color: #759079; }
 .login-footer { position: absolute; bottom: 27px; color: var(--muted); font-size: 12px; }

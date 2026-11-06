@@ -9,10 +9,16 @@
 @keyframes backdrop-enter { from { opacity: 0; } to { opacity: 1; } }
 @keyframes badge-enter { from { opacity: .55; } to { opacity: 1; } }
 @keyframes navigation-enter { from { opacity: .5; transform: translateX(-18px); } to { opacity: 1; transform: none; } }
+@keyframes dialog-exit { to { opacity: 0; transform: translateY(4px) scale(.99); } }
+@keyframes navigation-exit { to { opacity: 0; transform: translateX(-18px); } }
+@keyframes backdrop-exit { to { opacity: 0; } }
 .route-view { animation: workspace-enter var(--duration-normal) var(--ease-out); }
 dialog[open] { animation: dialog-enter var(--duration-dialog) var(--ease-out); }
 dialog[open]::backdrop { animation: backdrop-enter var(--duration-fast) ease-out; }
 dialog.navigation-dialog[open] { animation-name: navigation-enter; }
+dialog[data-closing] { animation: dialog-exit var(--duration-fast) ease-out both; }
+dialog[data-closing]::backdrop { animation: backdrop-exit var(--duration-fast) ease-out both; }
+dialog.navigation-dialog[data-closing] { animation-name: navigation-exit; }
 .badge { animation: badge-enter var(--duration-normal) ease-out; }
 .history-list > li { animation: workspace-enter var(--duration-normal) var(--ease-out); }
 .notice, .revision-form, .return-note { animation: workspace-enter var(--duration-normal) var(--ease-out); }
