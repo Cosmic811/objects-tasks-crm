@@ -1,0 +1,132 @@
+[
+  {
+    "client": 345,
+    "page": "object",
+    "scroll": 345,
+    "width": 360
+  },
+  {
+    "client": 375,
+    "page": "object",
+    "scroll": 375,
+    "width": 390
+  },
+  {
+    "client": 768,
+    "page": "object",
+    "scroll": 768,
+    "width": 768
+  },
+  {
+    "client": 1024,
+    "page": "object",
+    "scroll": 1024,
+    "width": 1024
+  },
+  {
+    "client": 1440,
+    "page": "object",
+    "scroll": 1440,
+    "width": 1440
+  },
+  {
+    "client": 345,
+    "opacity": "1",
+    "page": "task",
+    "scroll": 345,
+    "width": 360
+  },
+  {
+    "client": 375,
+    "opacity": "1",
+    "page": "task",
+    "scroll": 375,
+    "width": 390
+  },
+  {
+    "client": 753,
+    "opacity": "1",
+    "page": "task",
+    "scroll": 753,
+    "width": 768
+  },
+  {
+    "client": 1009,
+    "opacity": "1",
+    "page": "task",
+    "scroll": 1009,
+    "width": 1024
+  },
+  {
+    "client": 1425,
+    "opacity": "1",
+    "page": "task",
+    "scroll": 1425,
+    "width": 1440
+  },
+  {
+    "client": 360,
+    "page": "objects",
+    "scroll": 360,
+    "width": 360
+  },
+  {
+    "client": 390,
+    "page": "objects",
+    "scroll": 390,
+    "width": 390
+  },
+  {
+    "client": 768,
+    "page": "objects",
+    "scroll": 768,
+    "width": 768
+  },
+  {
+    "client": 1024,
+    "page": "objects",
+    "scroll": 1024,
+    "width": 1024
+  },
+  {
+    "client": 1440,
+    "page": "objects",
+    "scroll": 1440,
+    "width": 1440
+  },
+  {
+    "client": 360,
+    "font": "\"Manrope Variable\", Manrope, sans-serif",
+    "page": "login",
+    "scroll": 360,
+    "width": 360
+  },
+  {
+    "client": 390,
+    "font": "\"Manrope Variable\", Manrope, sans-serif",
+    "page": "login",
+    "scroll": 390,
+    "width": 390
+  },
+  {
+    "client": 768,
+    "font": "\"Manrope Variable\", Manrope, sans-serif",
+    "page": "login",
+    "scroll": 768,
+    "width": 768
+  },
+  {
+    "client": 1024,
+    "font": "\"Manrope Variable\", Manrope, sans-serif",
+    "page": "login",
+    "scroll": 1024,
+    "width": 1024
+  },
+  {
+    "client": 1440,
+    "font": "\"Manrope Variable\", Manrope, sans-serif",
+    "page": "login",
+    "scroll": 1440,
+    "width": 1440
+  }
+]

@@ -1,0 +1,74 @@
+[
+  {
+    "name": "text",
+    "foreground": "#17252b",
+    "background": "#f3f2ed",
+    "ratio": 14.02
+  },
+  {
+    "name": "muted",
+    "foreground": "#61716e",
+    "background": "#f3f2ed",
+    "ratio": 4.57
+  },
+  {
+    "name": "placeholder",
+    "foreground": "#61716e",
+    "background": "#fdfefb",
+    "ratio": 5.07
+  },
+  {
+    "name": "primary button",
+    "foreground": "#ffffff",
+    "background": "#1c756e",
+    "ratio": 5.5
+  },
+  {
+    "name": "navigation",
+    "foreground": "#afbfbe",
+    "background": "#15242a",
+    "ratio": 8.36
+  },
+  {
+    "name": "new",
+    "foreground": "#596968",
+    "background": "#eff2ef",
+    "ratio": 5.11
+  },
+  {
+    "name": "in progress",
+    "foreground": "#365d83",
+    "background": "#edf2f8",
+    "ratio": 6.12
+  },
+  {
+    "name": "review",
+    "foreground": "#805d1d",
+    "background": "#fbf2dc",
+    "ratio": 5.38
+  },
+  {
+    "name": "accepted",
+    "foreground": "#316b48",
+    "background": "#eaf3e9",
+    "ratio": 5.56
+  },
+  {
+    "name": "revision",
+    "foreground": "#a24e32",
+    "background": "#fcefe6",
+    "ratio": 5.07
+  },
+  {
+    "name": "return note",
+    "foreground": "#845329",
+    "background": "#fcf3e7",
+    "ratio": 5.88
+  },
+  {
+    "name": "unfinished count",
+    "foreground": "#806b3e",
+    "background": "#ffffff",
+    "ratio": 5.13
+  }
+]

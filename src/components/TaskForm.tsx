@@ -3,7 +3,7 @@ import type { FormEvent } from 'react'
 import { api } from '../lib/api'
 import { errorMessage } from '../lib/errors'
 import type { Profile, Task } from '../types/database'
-import { Dialog, ErrorNotice } from './Ui'
+import { Dialog, ErrorNotice, Icon } from './Ui'
 
 export function TaskForm({
   task,
@@ -49,10 +49,11 @@ export function TaskForm({
   return (
     <Dialog
       title={task ? 'Изменить задачу' : 'Новая задача'}
+      description="Опишите работу и назначьте ответственного."
       onClose={onClose}
       busy={busy}
     >
-      <form className="form stack" onSubmit={submit}>
+      <form className="form stack" onSubmit={submit} aria-busy={busy}>
         {error && <ErrorNotice>{error}</ErrorNotice>}
         <label>
           Название задачи
@@ -60,6 +61,7 @@ export function TaskForm({
             autoFocus
             required
             maxLength={200}
+            placeholder="Что нужно сделать?"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             disabled={busy}
@@ -70,6 +72,7 @@ export function TaskForm({
           <textarea
             rows={5}
             maxLength={10000}
+            placeholder="Что проверить, подготовить или согласовать"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             disabled={busy}
@@ -105,6 +108,7 @@ export function TaskForm({
         <div className="actions">
           <button className="button" disabled={busy || !employees.length}>
             {busy ? 'Сохраняем…' : 'Сохранить задачу'}
+            <Icon name="right" size={17} />
           </button>
           <button
             type="button"

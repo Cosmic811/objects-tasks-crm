@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { errorMessage } from '../lib/errors'
-import { Dialog, ErrorNotice } from './Ui'
+import { Dialog, ErrorNotice, Icon } from './Ui'
 
 export function DeleteDialog({
   title,
@@ -29,7 +29,7 @@ export function DeleteDialog({
     }
   }
   return (
-    <Dialog title={title} onClose={onClose} busy={busy}>
+    <Dialog title={title} onClose={onClose} busy={busy} className="delete-dialog">
       <div className="stack">
         <p>{description}</p>
         <p className="muted">
@@ -46,6 +46,7 @@ export function DeleteDialog({
             Отмена
           </button>
           <button className="button danger" onClick={confirm} disabled={busy}>
+            <Icon name="trash" size={17} />
             {busy ? 'Удаляем…' : 'Удалить'}
           </button>
         </div>

@@ -1,0 +1,284 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-06T06:12:16.947Z",
+  "title": "Design System: Объекты и задачи",
+  "extensions": {
+    "colorMeta": {
+      "canvas": {
+        "role": "neutral"
+      },
+      "surface": {
+        "role": "neutral"
+      },
+      "surface-soft": {
+        "role": "neutral"
+      },
+      "sidebar": {
+        "role": "neutral"
+      },
+      "sidebar-text": {
+        "role": "neutral"
+      },
+      "sidebar-muted": {
+        "role": "neutral"
+      },
+      "text": {
+        "role": "neutral"
+      },
+      "muted": {
+        "role": "neutral"
+      },
+      "accent": {
+        "role": "primary"
+      },
+      "accent-hover": {
+        "role": "primary"
+      },
+      "accent-soft": {
+        "role": "primary"
+      },
+      "warm": {
+        "role": "secondary"
+      },
+      "line": {
+        "role": "neutral"
+      },
+      "line-strong": {
+        "role": "neutral"
+      },
+      "danger": {
+        "role": "secondary"
+      },
+      "danger-soft": {
+        "role": "secondary"
+      },
+      "status-new": {
+        "role": "secondary"
+      },
+      "status-new-bg": {
+        "role": "secondary"
+      },
+      "status-in-progress": {
+        "role": "secondary"
+      },
+      "status-in-progress-bg": {
+        "role": "secondary"
+      },
+      "status-review": {
+        "role": "secondary"
+      },
+      "status-review-bg": {
+        "role": "secondary"
+      },
+      "status-accepted": {
+        "role": "secondary"
+      },
+      "status-accepted-bg": {
+        "role": "secondary"
+      },
+      "status-revision": {
+        "role": "secondary"
+      },
+      "status-revision-bg": {
+        "role": "secondary"
+      }
+    },
+    "typographyMeta": {
+      "headline": {
+        "displayName": "Заголовок страницы",
+        "purpose": "Основной заголовок рабочей страницы."
+      },
+      "title": {
+        "displayName": "Заголовок раздела",
+        "purpose": "Разделы рабочей страницы."
+      },
+      "subtitle": {
+        "displayName": "Подзаголовок",
+        "purpose": "Локальные группы."
+      },
+      "body": {
+        "displayName": "Основной текст",
+        "purpose": "Текст рабочей среды."
+      },
+      "label": {
+        "displayName": "Подпись действия",
+        "purpose": "Текст кнопок."
+      },
+      "small": {
+        "displayName": "Малый текст",
+        "purpose": "Контекст и навигационные подписи."
+      },
+      "caption": {
+        "displayName": "Пояснение",
+        "purpose": "Вспомогательные подписи."
+      }
+    },
+    "shadows": [
+      {
+        "name": "shadow-dialog",
+        "value": "0 24px 72px rgb(10 28 28 / 20%)",
+        "purpose": "Только модальное окно."
+      }
+    ],
+    "motion": [
+      {
+        "name": "duration-fast",
+        "value": "150ms",
+        "purpose": "Быстрые состояния и подложка диалога."
+      },
+      {
+        "name": "duration-normal",
+        "value": "200ms",
+        "purpose": "Вход страницы, события истории и обратная связь."
+      },
+      {
+        "name": "duration-dialog",
+        "value": "220ms",
+        "purpose": "Открытие диалога и меню."
+      },
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(.22, 1, .36, 1)",
+        "purpose": "Основная кривая входа и небольших смещений."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "compact-desktop",
+        "value": "1200px"
+      },
+      {
+        "name": "stacked-task",
+        "value": "1050px"
+      },
+      {
+        "name": "mobile-navigation",
+        "value": "900px"
+      },
+      {
+        "name": "task-cards",
+        "value": "720px"
+      },
+      {
+        "name": "phone",
+        "value": "480px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Основная кнопка",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Компактное действие с состояниями наведения, нажатия и фокуса.",
+      "html": "<button class=\"ds-button\">Создать задачу</button>",
+      "css": ":host { font-family: 'Manrope Variable', 'Manrope', sans-serif; font-size: 15px; line-height: 1.55; color: var(--text, #17252b); }\n.ds-button { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 44px; padding: 11px 18px; border: 1px solid var(--accent, #1c756e); border-radius: var(--radius-control, 8px); background: var(--accent, #1c756e); color: white; font-weight: 650; font-size: 13px; line-height: 1.4; text-decoration: none; transition: background var(--duration-fast, 150ms), border-color var(--duration-fast, 150ms), color var(--duration-fast, 150ms), transform var(--duration-fast, 150ms); }\n.ds-button:hover:not(:disabled) { background: var(--accent-hover, #155e58); border-color: var(--accent-hover, #155e58); }\n.ds-button:active:not(:disabled) { transform: translateY(1px); }\n.ds-button:disabled { opacity: .5; }\n:focus-visible { outline: 3px solid #368f82; outline-offset: 4px; }\n@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }"
+    },
+    {
+      "name": "Вторичная кнопка",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Компактное действие с состояниями наведения, нажатия и фокуса.",
+      "html": "<button class=\"ds-button ds-secondary\">Отмена</button>",
+      "css": ":host { font-family: 'Manrope Variable', 'Manrope', sans-serif; font-size: 15px; line-height: 1.55; color: var(--text, #17252b); }\n.ds-button { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 44px; padding: 11px 18px; border: 1px solid var(--accent, #1c756e); border-radius: var(--radius-control, 8px); background: var(--accent, #1c756e); color: white; font-weight: 650; font-size: 13px; line-height: 1.4; text-decoration: none; transition: background var(--duration-fast, 150ms), border-color var(--duration-fast, 150ms), color var(--duration-fast, 150ms), transform var(--duration-fast, 150ms); }\n.ds-button:hover:not(:disabled) { background: var(--accent-hover, #155e58); border-color: var(--accent-hover, #155e58); }\n.ds-button:active:not(:disabled) { transform: translateY(1px); }\n.ds-button:disabled { opacity: .5; }\n.ds-button.ds-secondary { background: var(--surface, #ffffff); color: #35534b; border-color: #cfd9ce; }\n.ds-button.ds-secondary:hover:not(:disabled) { background: #edf3e9; border-color: #b9cab9; }\n:focus-visible { outline: 3px solid #368f82; outline-offset: 4px; }\n@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }"
+    },
+    {
+      "name": "Опасное действие",
+      "kind": "button",
+      "refersTo": "button-danger",
+      "description": "Компактное действие с состояниями наведения, нажатия и фокуса.",
+      "html": "<button class=\"ds-button ds-danger\">Удалить</button>",
+      "css": ":host { font-family: 'Manrope Variable', 'Manrope', sans-serif; font-size: 15px; line-height: 1.55; color: var(--text, #17252b); }\n.ds-button { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 44px; padding: 11px 18px; border: 1px solid var(--accent, #1c756e); border-radius: var(--radius-control, 8px); background: var(--accent, #1c756e); color: white; font-weight: 650; font-size: 13px; line-height: 1.4; text-decoration: none; transition: background var(--duration-fast, 150ms), border-color var(--duration-fast, 150ms), color var(--duration-fast, 150ms), transform var(--duration-fast, 150ms); }\n.ds-button:hover:not(:disabled) { background: var(--accent-hover, #155e58); border-color: var(--accent-hover, #155e58); }\n.ds-button:active:not(:disabled) { transform: translateY(1px); }\n.ds-button:disabled { opacity: .5; }\n.ds-button.ds-danger { background: var(--danger, #ab4138); border-color: var(--danger, #ab4138); }\n.ds-button.ds-danger:hover:not(:disabled) { background: #8c332c; border-color: #8c332c; }\n:focus-visible { outline: 3px solid #368f82; outline-offset: 4px; }\n@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }"
+    },
+    {
+      "name": "Кнопка с иконкой",
+      "kind": "button",
+      "refersTo": "button-icon",
+      "description": "Действие с доступным именем.",
+      "html": "<button class=\"ds-icon-button\" aria-label=\"Открыть\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.65\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14m-7-7 7 7-7 7\"/></svg></button>",
+      "css": ":host { font-family: 'Manrope Variable', 'Manrope', sans-serif; font-size: 15px; line-height: 1.55; color: var(--text, #17252b); }\n.ds-icon-button { display: inline-grid; place-items: center; min-width: 42px; min-height: 42px; border: 1px solid var(--line, #dfe4dc); background: white; color: var(--muted, #61716e); border-radius: var(--radius-control, 8px); transition: background var(--duration-fast, 150ms), color var(--duration-fast, 150ms), border-color var(--duration-fast, 150ms); }\n.ds-icon-button:hover:not(:disabled) { color: var(--text, #17252b); background: var(--surface-soft, #f8f9f5); border-color: var(--line-strong, #b9c6bd); }\n.ds-icon-button:disabled { opacity: .45; }\n:focus-visible { outline: 3px solid #368f82; outline-offset: 4px; }\n@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }"
+    },
+    {
+      "name": "Поле формы",
+      "kind": "input",
+      "refersTo": "field",
+      "description": "Подписанное поле с явным фокусом.",
+      "html": "<div class=\"ds-form\"><label>Название<input type=\"text\" placeholder=\"Название задачи\" /></label></div>",
+      "css": ":host { font-family: 'Manrope Variable', 'Manrope', sans-serif; font-size: 15px; line-height: 1.55; color: var(--text, #17252b); }\n.ds-form label { display: grid; gap: 9px; color: var(--text, #17252b); font-size: 13px; font-weight: 650; }\n.ds-form input, .ds-form textarea, .ds-form select { width: 100%; min-height: 46px; padding: 12px 14px; background: #fdfefb; color: var(--text, #17252b); border: 1px solid #c9d3c6; border-radius: var(--radius-control, 8px); font-weight: 450; font-size: 14px; line-height: 1.5; transition: background var(--duration-fast, 150ms), border-color var(--duration-fast, 150ms), box-shadow var(--duration-fast, 150ms); }\n.ds-form input::placeholder, .ds-form textarea::placeholder { color: var(--muted, #61716e); opacity: 1; }\n.ds-form input:hover, .ds-form textarea:hover, .ds-form select:hover { border-color: #819b85; }\n.ds-form input:focus-visible, .ds-form textarea:focus-visible, .ds-form select:focus-visible { outline: 2px solid #3d8c73; outline-offset: 2px; border-color: var(--accent, #1c756e); background: white; }\n.ds-form input:disabled, .ds-form textarea:disabled, .ds-form select:disabled { background: #eef1e9; opacity: .7; }\n:focus-visible { outline: 3px solid #368f82; outline-offset: 4px; }\n@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }"
+    },
+    {
+      "name": "Навигация",
+      "kind": "nav",
+      "refersTo": "navigation",
+      "description": "Активная ссылка на тёмной поверхности.",
+      "html": "<nav class=\"ds-workspace-nav\" aria-label=\"Основная навигация\"><a class=\"ds-active\" aria-current=\"page\" href=\"#objects\"><span>Объекты</span><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.65\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14m-7-7 7 7-7 7\"/></svg></a><a href=\"#tasks\"><span>Мои задачи</span><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.65\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14m-7-7 7 7-7 7\"/></svg></a></nav>",
+      "css": ":host { font-family: 'Manrope Variable', 'Manrope', sans-serif; font-size: 15px; line-height: 1.55; color: var(--text, #17252b); }\n.ds-workspace-nav { display: grid; gap: 6px; }\n.ds-workspace-nav a { display: flex; align-items: center; gap: 13px; min-height: 48px; padding: 12px; text-decoration: none; font-size: 14px; font-weight: 550; color: var(--sidebar-muted, #afbfbe); border: 1px solid transparent; border-radius: var(--radius-control, 8px); transition: background var(--duration-fast, 150ms), color var(--duration-fast, 150ms), border-color var(--duration-fast, 150ms); }\n.ds-workspace-nav a span { flex: 1; }\n.ds-workspace-nav a > svg:last-child { opacity: 0; transition: opacity var(--duration-fast, 150ms), transform var(--duration-fast, 150ms); transform: translateX(-3px); }\n.ds-workspace-nav a:hover { color: #ffffff; background: #20353a; }\n.ds-workspace-nav a.ds-active { color: #f4f8f0; background: #2a4544; border-color: #3b5751; font-weight: 650; }\n.ds-workspace-nav a.ds-active > svg:last-child { opacity: .8; transform: none; }\n:focus-visible { outline: 3px solid #368f82; outline-offset: 4px; }\n@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }\n.ds-workspace-nav { background: var(--sidebar, #15242a); }"
+    },
+    {
+      "name": "Статус задачи",
+      "kind": "chip",
+      "refersTo": "status-badge",
+      "description": "Текстовый статус с семантической подложкой.",
+      "html": "<span class=\"ds-badge ds-status-new\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.65\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><circle cx=\"12\" cy=\"12\" r=\"1\"/></svg>Новая</span>",
+      "css": ":host { font-family: 'Manrope Variable', 'Manrope', sans-serif; font-size: 15px; line-height: 1.55; color: var(--text, #17252b); }\n.ds-badge { --status-color: #596968; --status-bg: #eff2ef; display: inline-flex; align-items: center; gap: 6px; padding: 5px 9px; color: var(--status-color, #a24e32); background: var(--status-bg, #fcefe6); border: 1px solid color-mix(in srgb, var(--status-color, #a24e32) 12%, transparent); border-radius: 6px; font-size: 12px; font-weight: 650; line-height: 1.35; white-space: nowrap; width: fit-content; }\n.ds-badge.ds-status-new { --status-color: #596968; --status-bg: #eff2ef; }"
+    },
+    {
+      "name": "Рабочая панель",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "Белая поверхность с границей без тени.",
+      "html": "<section class=\"ds-panel\"><div class=\"ds-panel-heading\"><h2>Описание задачи</h2></div><p>Описание работы</p></section>",
+      "css": ":host { font-family: 'Manrope Variable', 'Manrope', sans-serif; font-size: 15px; line-height: 1.55; color: var(--text, #17252b); }\n.ds-panel { border: 1px solid var(--line, #dfe4dc); border-radius: var(--radius, 12px); padding: 28px; background: white; min-width: 0; }\n.ds-panel-heading { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }\n.ds-panel-heading h2 { font-size: 17px; }"
+    },
+    {
+      "name": "Строка объекта",
+      "kind": "custom",
+      "refersTo": "object-row",
+      "description": "Название и адрес в связной рабочей строке.",
+      "html": "<a class=\"ds-object-row\" href=\"#object\"><span class=\"ds-object-text\"><strong>Объект</strong><span>Адрес объекта</span></span><span class=\"ds-row-arrow\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.65\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14m-7-7 7 7-7 7\"/></svg></span></a>",
+      "css": ":host { font-family: 'Manrope Variable', 'Manrope', sans-serif; font-size: 15px; line-height: 1.55; color: var(--text, #17252b); }\n.ds-object-row { display: flex; align-items: center; gap: 22px; padding: 27px 28px; border-bottom: 1px solid var(--line, #dfe4dc); color: var(--text, #17252b); text-decoration: none; transition: background var(--duration-normal, 200ms), transform var(--duration-fast, 150ms); }\n.ds-object-row:hover { background: #f9fbf5; }\n.ds-object-row:focus-visible { outline-offset: -4px; background: #f4f8ef; }\n.ds-object-row:active { background: #eef4e9; }\n.ds-object-text { flex: 1; min-width: 0; display: grid; gap: 8px; }\n.ds-object-text strong { font-size: 17px; font-weight: 700; letter-spacing: -.02em; overflow-wrap: anywhere; }\n.ds-object-text > span { color: var(--muted, #61716e); font-size: 13px; display: flex; align-items: flex-start; gap: 6px; overflow-wrap: anywhere; }\n.ds-row-arrow { display: grid; place-items: center; width: 36px; height: 36px; margin-left: 8px; color: #73877a; transition: transform var(--duration-normal, 200ms) var(--ease-out, cubic-bezier(.22, 1, .36, 1)), color var(--duration-normal, 200ms); }\n.ds-object-row:hover .ds-row-arrow { color: var(--accent, #1c756e); transform: translate(2px, -2px); }\n:focus-visible { outline: 3px solid #368f82; outline-offset: 4px; }\n@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Architectural Workspace",
+    "overview": "Тёмная навигация обрамляет тёплый светлый холст. Белые рабочие поверхности, тонкие границы и спокойный бирюзовый акцент создают собранную среду. Заголовки и названия ведут взгляд; подписи и метаданные остаются на втором плане.\n\nПлотность поддерживают открытые списки, выровненные строки и ясные группы действий. Линейные иконки и небольшой чертёж на странице входа связывают интерфейс с архитектурной темой. Движение краткое и связано с открытием, переходом или обратной связью.",
+    "keyCharacteristics": [
+      "Тёмная навигация и тёплый светлый холст.",
+      "Белые поверхности с тонкими границами.",
+      "Локальный Manrope Variable и линейные иконки Lucide.",
+      "Название и действие читаются раньше метаданных.",
+      "Краткое движение с поддержкой reduced motion."
+    ],
+    "rules": [
+      {
+        "name": "The Status Has a Name Rule",
+        "body": "Статус сопровождается текстом и иконкой; цвет не заменяет название.",
+        "section": "colors"
+      },
+      {
+        "name": "The Task First Rule",
+        "body": "В одноколоночной задаче описание и разрешённые действия предшествуют метаданным и истории.",
+        "section": "layout"
+      },
+      {
+        "name": "The Dialog Elevation Rule",
+        "body": "Сохранять панели без теней; модальное окно отделять тенью и затемнением фона.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** сохранять тёмную навигацию, тёплый холст и белые рабочие поверхности.",
+      "**Do** использовать локальный Manrope Variable с кириллицей и Lucide с единой толщиной линии.",
+      "**Do** переносить длинные названия и сохранять исполнителя и статус в мобильных карточках.",
+      "**Do** сохранять видимый фокус, нативный модальный диалог и восстановление фокуса.",
+      "**Do** отключать движение при prefers-reduced-motion."
+    ],
+    "donts": [
+      "**Don't** заменять название статуса одним цветом.",
+      "**Don't** добавлять тени обычным рабочим панелям.",
+      "**Don't** ставить метаданные раньше описания и действий в одноколоночной задаче.",
+      "**Don't** добавлять непрерывную декоративную анимацию.",
+      "**Don't** заменять рабочие списки декоративными KPI-плитками."
+    ]
+  }
+}

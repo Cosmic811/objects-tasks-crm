@@ -3,7 +3,7 @@ import type { FormEvent } from 'react'
 import { api } from '../lib/api'
 import { errorMessage } from '../lib/errors'
 import type { Building } from '../types/database'
-import { Dialog, ErrorNotice } from './Ui'
+import { Dialog, ErrorNotice, Icon } from './Ui'
 
 export function ObjectForm({
   object,
@@ -37,10 +37,11 @@ export function ObjectForm({
   return (
     <Dialog
       title={object ? 'Изменить объект' : 'Новый объект'}
+      description="Название и адрес строительной площадки."
       onClose={onClose}
       busy={busy}
     >
-      <form className="form stack" onSubmit={submit}>
+      <form className="form stack" onSubmit={submit} aria-busy={busy}>
         {error && <ErrorNotice>{error}</ErrorNotice>}
         <label>
           Название объекта
@@ -48,6 +49,7 @@ export function ObjectForm({
             autoFocus
             required
             maxLength={160}
+            placeholder="Например, ЖК Северный"
             value={name}
             onChange={(e) => setName(e.target.value)}
             disabled={busy}
@@ -58,6 +60,7 @@ export function ObjectForm({
           <input
             required
             maxLength={500}
+            placeholder="Город, улица, номер здания"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
             disabled={busy}
@@ -66,6 +69,7 @@ export function ObjectForm({
         <div className="actions">
           <button className="button" disabled={busy}>
             {busy ? 'Сохраняем…' : 'Сохранить объект'}
+            <Icon name="right" size={17} />
           </button>
           <button
             type="button"

@@ -58,6 +58,7 @@ Workflow GitHub Pages выполняет lint, typecheck, тесты и сбор
 
 ## Материалы
 
+- [Обновление интерфейса: экраны, motion и проверки](docs/design-refinement.md)
 - [Объяснение для руководителя](docs/manager-guide.md)
 - [Решения и допущения](docs/decisions.md)
 - [Проверки и ограничения](docs/qa-report.md)
