@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 import type { Database } from '../types/database'
+import { fetchWithDeadline } from './requests'
 
 const url = import.meta.env.VITE_SUPABASE_URL?.trim()
 const key = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY?.trim()
@@ -23,6 +24,8 @@ export const configured = Boolean(
 )
 export const supabase = configured
   ? createClient<Database>(url!, key!, {
+      global: { fetch: fetchWithDeadline },
+      db: { retry: false },
       auth: {
         persistSession: true,
         autoRefreshToken: true,

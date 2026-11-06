@@ -1,9 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   HashRouter,
   Link,
   Navigate,
-  NavLink,
   Outlet,
   Route,
   Routes,
@@ -14,7 +13,8 @@ import { useAuth } from './auth/context'
 import { configured } from './lib/supabase'
 import { errorMessage } from './lib/errors'
 import { roleLabels } from './lib/workflow'
-import { ErrorNotice, Icon, Loading } from './components/Ui'
+import { Brand, Dialog, ErrorNotice, Icon, Loading } from './components/Ui'
+import { UserAccount, WorkspaceNavigation } from './components/Navigation'
 import { Login } from './pages/Login'
 import { Objects } from './pages/Objects'
 import { ObjectDetail } from './pages/ObjectDetail'
@@ -63,8 +63,18 @@ function Protected() {
 }
 function Shell() {
   const { profile, signOut } = useAuth()
+  const location = useLocation()
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
+  const [navigationOpen, setNavigationOpen] = useState(false)
+  useEffect(() => {
+    document.getElementById('main')?.focus({ preventScroll: true })
+    window.scrollTo({ top: 0, behavior: 'instant' })
+  }, [location.pathname])
+  const context = location.pathname.startsWith('/tasks/') ? 'Карточка задачи'
+    : location.pathname.startsWith('/objects/') ? 'Карточка объекта'
+      : location.pathname === '/my-tasks' ? 'Мои задачи' : 'Объекты'
+  useEffect(() => { document.title = `${context} | Объекты и задачи` }, [context])
   async function logout() {
     setBusy(true)
     setError('')
@@ -90,59 +100,31 @@ function Shell() {
         Перейти к содержанию
       </a>
       <aside className="sidebar">
-        <Link to="/" className="brand">
-          <span className="brand-symbol">
-            <Icon name="building" />
-          </span>
-          <span>
-            Объекты
-            <br />и задачи
-          </span>
-        </Link>
-        <nav aria-label="Основная навигация">
-          <NavLink to="/" end>
-            <Icon name="building" />
-            Объекты
-          </NavLink>
-          {profile!.role === 'executor' && (
-            <NavLink to="/my-tasks">
-              <Icon name="tasks" />
-              Мои задачи
-            </NavLink>
-          )}
-        </nav>
-        <div className="account">
-          <span className="avatar" aria-hidden="true">
-            {profile!.display_name.slice(0, 1)}
-          </span>
-          <div>
-            <strong>{profile!.display_name}</strong>
-            <span>{roleLabels[profile!.role]}</span>
-          </div>
-          <button
-            className="logout-button"
-            onClick={logout}
-            disabled={busy}
-            aria-label="Выйти из аккаунта"
-            title="Выйти"
-          >
-            <Icon name="logout" />
-          </button>
-        </div>
+        <Link to="/" className="brand-link" aria-label="Объекты и задачи"><Brand /></Link>
+        <p className="navigation-label">Рабочее пространство</p>
+        <WorkspaceNavigation role={profile!.role} />
+        <UserAccount profile={profile!} onLogout={logout} busy={busy} />
       </aside>
       <div className="workspace">
+        <header className="mobile-header">
+          <Link to="/" className="brand-link" aria-label="Объекты и задачи"><Brand /></Link>
+          <button className="menu-button" aria-label="Открыть меню" aria-expanded={navigationOpen} aria-controls={navigationOpen ? 'workspace-navigation' : undefined} onClick={() => setNavigationOpen(true)}><Icon name="menu" /></button>
+        </header>
         <header className="topbar">
-          <span>Рабочий кабинет</span>
-          <span className="role-tag">{roleLabels[profile!.role]}</span>
+          <div className="workspace-context"><span>Рабочий кабинет</span><Icon name="chevron" size={14} /><span>{context}</span></div>
+          <span className="role-tag"><Icon name={profile!.role === 'manager' ? 'shield' : 'user'} size={14} />{roleLabels[profile!.role]}</span>
         </header>
         <main id="main" className="content" tabIndex={-1}>
           {error && <ErrorNotice>{error}</ErrorNotice>}
-          <Outlet />
+          <div className="route-view" key={location.pathname}><Outlet /></div>
         </main>
         <footer className="app-footer">
           Объекты и задачи · Рабочее пространство команды
         </footer>
       </div>
+      {navigationOpen && <Dialog title="Навигация" onClose={() => setNavigationOpen(false)} className="navigation-dialog">
+        <div id="workspace-navigation"><WorkspaceNavigation role={profile!.role} onNavigate={() => setNavigationOpen(false)} />{error && <ErrorNotice>{error}</ErrorNotice>}<UserAccount profile={profile!} onLogout={logout} busy={busy} /></div>
+      </Dialog>}
     </div>
   )
 }

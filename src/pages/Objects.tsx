@@ -4,8 +4,9 @@ import { useAuth } from '../auth/context'
 import { api } from '../lib/api'
 import { taskCount } from '../lib/workflow'
 import { useQuery } from '../hooks/useQuery'
+import { usePagination } from '../hooks/usePagination'
 import { ObjectForm } from '../components/ObjectForm'
-import { Empty, Icon, LoadError, Loading, Success } from '../components/Ui'
+import { Empty, Icon, LoadError, Loading, Pagination, Success } from '../components/Ui'
 
 export function Objects() {
   const { profile } = useAuth()
@@ -13,10 +14,11 @@ export function Objects() {
   const manager = profile!.role === 'manager'
   const [creating, setCreating] = useState(false)
   const [success, setSuccess] = useState(location.state?.message ?? '')
-  const { data, error, reload } = useQuery(async () => {
+  const { data, error, reload, refreshing } = useQuery(async () => {
     const [objects, tasks] = await Promise.all([api.objects(), api.tasks()])
     return { objects, tasks }
   }, 'objects')
+  const pagination = usePagination(data?.objects ?? [])
   return (
     <>
       <div className="page-header">
@@ -29,7 +31,7 @@ export function Objects() {
           </p>
         </div>
         {manager && (
-          <button className="button" onClick={() => setCreating(true)}>
+          <button className="button" onClick={() => setCreating(true)} disabled={refreshing}>
             <Icon name="plus" />
             Создать объект
           </button>
@@ -47,8 +49,8 @@ export function Objects() {
             : 'Когда руководитель назначит вам задачу, её объект появится здесь.'}
         </Empty>
       ) : (
-        <section className="object-list" aria-label="Список объектов">
-          {data.objects.map((object) => {
+        <><section className="object-list" aria-label="Список объектов" aria-busy={refreshing}>
+          {pagination.items.map((object) => {
             const tasks = data.tasks.filter((t) => t.object_id === object.id)
             return (
               <Link
@@ -61,20 +63,20 @@ export function Objects() {
                 </span>
                 <span className="object-text">
                   <strong>{object.name}</strong>
-                  <span>{object.address}</span>
+                  <span><Icon name="pin" size={14} />{object.address}</span>
                 </span>
                 <span className="object-count">
-                  {taskCount(tasks.length)}
-                  <span>
-                    Не завершено:{' '}
+                  <span className="object-total">{taskCount(tasks.length)}</span>
+                  <span className={tasks.some(task => task.status !== 'accepted') ? 'object-open' : 'object-open completed'}>
+                    <span className="status-dot" />Не завершено:{' '}
                     {tasks.filter((t) => t.status !== 'accepted').length}
                   </span>
                 </span>
-                <Icon name="arrow" />
+                <span className="row-arrow"><Icon name="arrow" /></span>
               </Link>
             )
           })}
-        </section>
+        </section><Pagination {...pagination} /></>
       )}
       {creating && (
         <ObjectForm

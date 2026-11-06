@@ -11,3 +11,10 @@ supabase/.temp/
 supabase/.branches/
 .openai/
 *.log
+.impeccable/
+.cursor/
+.codex/
+AGENTS.md
+DESIGN.md
+PRODUCT.md
+docs/qa/

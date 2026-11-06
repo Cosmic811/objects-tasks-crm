@@ -22,7 +22,7 @@ export function ObjectDetail() {
   const manager = profile!.role === 'manager'
   const [modal, setModal] = useState<'edit' | 'delete' | 'task' | null>(null)
   const [success, setSuccess] = useState('')
-  const { data, error, reload } = useQuery(async () => {
+  const { data, error, reload, refreshing } = useQuery(async () => {
     const [object, tasks, profiles] = await Promise.all([
       api.object(id),
       api.tasks(id),
@@ -44,21 +44,25 @@ export function ObjectDetail() {
       <div className="page-header">
         <div>
           <h1>{data.object.name}</h1>
-          <p className="muted">{data.object.address}</p>
+          <p className="muted address-line"><Icon name="pin" size={17} />{data.object.address}</p>
         </div>
         {manager && (
           <div className="actions">
             <button
               className="button secondary"
               onClick={() => setModal('edit')}
+              disabled={refreshing}
             >
               Изменить
             </button>
             <button
-              className="text-button danger-text"
+              className="icon-button danger-text"
+              aria-label="Удалить объект"
+              title="Удалить объект"
               onClick={() => setModal('delete')}
+              disabled={refreshing}
             >
-              Удалить объект
+              <Icon name="trash" size={18} />
             </button>
           </div>
         )}
@@ -76,13 +80,13 @@ export function ObjectDetail() {
           </p>
         </div>
         {manager && (
-          <button className="button" onClick={() => setModal('task')}>
+          <button className="button" onClick={() => setModal('task')} disabled={refreshing}>
             <Icon name="plus" />
             Создать задачу
           </button>
         )}
       </div>
-      <TaskTable tasks={data.tasks} profiles={data.profiles} />
+      <div aria-busy={refreshing}><TaskTable tasks={data.tasks} profiles={data.profiles} viewer={profile!} /></div>
       {modal === 'edit' && (
         <ObjectForm
           object={data.object}

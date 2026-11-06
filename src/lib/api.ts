@@ -1,4 +1,5 @@
 import { client } from './supabase'
+import { readAllPages } from './requests'
 import type {
   Building,
   History,
@@ -18,35 +19,35 @@ async function rows<T>(
 
 export const api = {
   objects: () =>
-    rows<Building[]>(
+    readAllPages<Building>((from, to) =>
       client()
         .from('objects')
-        .select('*')
-        .order('created_at', { ascending: false }),
+        .select('*', { count: 'exact' })
+        .order('created_at', { ascending: false }).order('id').range(from, to),
     ),
   object: (id: string) =>
     rows<Building>(client().from('objects').select('*').eq('id', id).single()),
   tasks: (objectId?: string) => {
     let request = client()
       .from('tasks')
-      .select('*')
-      .order('created_at', { ascending: false })
+      .select('*', { count: 'exact' })
+      .order('created_at', { ascending: false }).order('id')
     if (objectId) request = request.eq('object_id', objectId)
-    return rows<Task[]>(request)
+    return readAllPages<Task>((from, to) => request.range(from, to))
   },
   task: (id: string) =>
     rows<Task>(client().from('tasks').select('*').eq('id', id).single()),
   profiles: () =>
-    rows<Profile[]>(
-      client().from('profiles').select('*').order('display_name'),
+    readAllPages<Profile>((from, to) =>
+      client().from('profiles').select('*', { count: 'exact' }).order('display_name').order('id').range(from, to),
     ),
   history: (taskId: string) =>
-    rows<History[]>(
+    readAllPages<History>((from, to) =>
       client()
         .from('task_status_history')
-        .select('*')
+        .select('*', { count: 'exact' })
         .eq('task_id', taskId)
-        .order('created_at'),
+        .order('created_at').order('id').range(from, to),
     ),
   saveObject: (id: string | null, name: string, address: string) =>
     rows(

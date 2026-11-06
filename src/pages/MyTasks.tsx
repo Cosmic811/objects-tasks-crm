@@ -37,6 +37,7 @@ export function MyTasks() {
           profiles={data.profiles}
           showObject
           objectNames={data.objectNames}
+          viewer={profile!}
         />
       )}
     </>

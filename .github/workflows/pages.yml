@@ -2,11 +2,13 @@ name: Check and deploy CRM
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 permissions:
   contents: read
 concurrency:
-  group: pages
+  group: pages-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: false
 jobs:
   build:
@@ -18,7 +20,9 @@ jobs:
           node-version: 24
           cache: npm
       - uses: actions/configure-pages@v5
+        if: github.event_name != 'pull_request'
       - run: npm ci
+      - run: npm audit --omit=dev --audit-level=high
       - run: node scripts/check-public.mjs
       - run: npm run lint
       - run: npm run typecheck
@@ -33,9 +37,11 @@ jobs:
           VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.SUPABASE_PUBLISHABLE_KEY }}
           VITE_BASE_PATH: /objects-tasks-crm/
       - uses: actions/upload-pages-artifact@v3
+        if: github.event_name != 'pull_request'
         with:
           path: dist
   deploy:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     needs: build
     runs-on: ubuntu-latest
     permissions:

@@ -12,16 +12,14 @@ const messages: Record<string, string> = {
 }
 
 export function errorMessage(error: unknown): string {
-  const details =
-    error && typeof error === 'object'
-      ? (error as { message?: string; code?: string; status?: number })
-      : {}
-  // Never log session tokens, request headers, passwords, or complete Supabase responses.
-  console.error('CRM operation failed', {
-    code: details.code ?? 'NETWORK_ERROR',
-  })
+  const source = error && typeof error === 'object' ? error : {}
+  const details = {
+    message: 'message' in source && typeof source.message === 'string' ? source.message : '',
+    code: 'code' in source && typeof source.code === 'string' ? source.code : '',
+    status: 'status' in source && typeof source.status === 'number' ? source.status : 0,
+  }
   const known = Object.keys(messages).find((key) =>
-    details.message?.includes(key),
+    details.message.includes(key),
   )
   if (known) return messages[known]
   if (details.code === '42501') return messages.FORBIDDEN
@@ -30,5 +28,14 @@ export function errorMessage(error: unknown): string {
   if (details.code === 'PGRST116') return messages.NOT_FOUND
   if (details.status === 401 || details.code === 'PGRST301')
     return 'Сессия истекла. Войдите в аккаунт снова.'
+  if (details.status === 429)
+    return 'Слишком много запросов. Подождите немного и повторите действие.'
   return 'Не удалось выполнить действие. Проверьте соединение и попробуйте ещё раз.'
+}
+
+export function mutationErrorMessage(error: unknown): string {
+  const message = errorMessage(error)
+  return message.startsWith('Не удалось выполнить')
+    ? 'Не удалось подтвердить результат операции. Перед повторной попыткой обновите список или карточку, чтобы проверить, сохранились ли изменения.'
+    : message
 }
