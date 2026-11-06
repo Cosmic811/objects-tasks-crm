@@ -4,10 +4,14 @@
 
 Стек: React 19, TypeScript, Vite 8, Supabase Auth, PostgreSQL и RLS. Node.js от 22.18.
 
+Приложение: https://cosmic811.github.io/objects-tasks-crm/
+
+Репозиторий: https://github.com/Cosmic811/objects-tasks-crm
+
 ## Настройка Supabase
 
 1. Создайте отдельный Supabase-проект на бесплатном тарифе.
-2. Выполните [миграцию](supabase/migrations/202611050001_crm.sql) в SQL Editor или примените её через Supabase CLI: `supabase link --project-ref YOUR_REF`, затем `supabase db push`. Не выполняйте оба способа для одной миграции.
+2. Выполните оба SQL-файла из [supabase/migrations](supabase/migrations) по порядку имени в SQL Editor или примените их через Supabase CLI: `supabase link --project-ref YOUR_REF`, затем `supabase db push`. Не выполняйте оба способа для одних миграций.
 3. В Authentication → Sign In / Providers отключите **Allow new users to sign up**, сохраните изменения. Оставьте вход Email/Password включённым.
 4. В Authentication → Users → Add user создайте подтверждённые аккаунты `manager@crm.example`, `executor1@crm.example`, `executor2@crm.example`. Пароли задайте самостоятельно, передавайте проверяющему приватно.
 5. Выполните [seed.sql](supabase/seed.sql). Он назначит роли и создаст три объекта, пять задач во всех пяти статусах и историю. Повторное заполнение блокируется.
@@ -56,5 +60,6 @@ Workflow GitHub Pages выполняет lint, typecheck, тесты и сбор
 
 - [Объяснение для руководителя](docs/manager-guide.md)
 - [Решения и допущения](docs/decisions.md)
+- [Проверки и ограничения](docs/qa-report.md)
 
 Удаление мягкое. Объект с незавершёнными задачами удалить нельзя. История недоступна для записи через клиентский API. Список и дата фактических проверок фиксируются отдельно в QA-отчёте.
